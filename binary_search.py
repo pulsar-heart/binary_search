@@ -152,7 +152,7 @@ def argmin(f, lo, hi, epsilon=1e-3):
     and that lo and hi are both floats satisfying lo < hi.
     Returns a number that is within epsilon of the value that minimizes f(x) over the interval [lo,hi]
 
-    HINT:
+    HINT: small hint
     The basic algorithm is:
         1) The base case is when hi-lo < epsilon
         2) For each recursive call:
@@ -226,6 +226,3 @@ def argmin_simple(f, epsilon=1e-3):
     '''
     lo, hi = find_boundaries(f)
     return argmin(f, lo, hi, epsilon)
-
-x1 = argmin(lambda x: (x-5)**2, -20, 20)
-print(x1)
