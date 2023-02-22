@@ -26,6 +26,23 @@ def find_smallest_positive(xs):
     >>> find_smallest_positive([-3, -2, -1]) is None
     True
     '''
+    if len(xs) == 0:
+        return None
+    if xs[-1] <= 0:
+        return None
+    def go(left, right):
+        if left == right:
+            if xs[left] > 0:
+                return left
+            else:
+                return None
+        mid = (left + right) // 2
+        if xs[mid] > 0:
+            right = mid
+        if xs[mid] <= 0:
+            left = mid + 1
+        return go(left, right)
+    return go(0, len(xs) - 1)
 
 
 def count_repeats(xs, x):
@@ -52,6 +69,81 @@ def count_repeats(xs, x):
     >>> count_repeats([3, 2, 1], 4)
     0
     '''
+    if xs[1] == x:
+        lo = 0
+    else: 
+        lo = highest_greater_index(xs, x)
+        if lo == None:
+            return 0
+        else:
+            lo += 1
+    if xs[-1] == x:
+        hi = len(xs)
+    else:
+        hi = lowest_less_index(xs, x)
+        if hi == None:
+            return 0
+    return hi - lo
+
+
+
+def lowest_less_index(xs, x):
+    '''
+    >>> lowest_less_index([5, 4, 3, 3, 3, 3, 3, 3, 3, 2, 1], 3)
+    9
+    >>> lowest_less_index([3, 2, 1], 4)
+    0
+    '''
+    if len(xs) == 0:
+        return None
+    if xs[-1] > x:
+        return None
+    def go(left, right):
+        if left == right:
+            if xs[left] < x:
+                return left
+            else:
+                return None
+        mid = (left + right) // 2
+        if xs[mid] >= x:
+            left = mid + 1
+        if xs[mid] < x:
+            right = mid
+        return go(left, right)
+
+    return go(0, len(xs) - 1)
+
+
+def highest_greater_index(xs, x):
+    '''
+    Assumes that there is a value greater than x in the list xs
+    >>> highest_greater_index([5, 4, 3, 3, 3, 3, 3, 3, 3, 2, 1], 2)
+    '''
+    if len(xs) == 0:
+        return None
+    if xs[1] < x:
+        return None
+    def go(left, right):
+        if left == right:
+            if xs[left] > x:
+                return left
+            else:
+                return None
+        if right == left + 1:
+            if xs[right] > x:
+                return right
+            elif xs[left] > x:
+                return left
+            else:
+                return None
+        mid = (left + right) // 2
+        if xs[mid] > x:
+            left = mid
+        if xs[mid] <= x:
+            right = mid - 1
+        return go(left, right)
+          
+    return go(0, len(xs) - 1)
 
 
 def argmin(f, lo, hi, epsilon=1e-3):
@@ -87,6 +179,17 @@ def argmin(f, lo, hi, epsilon=1e-3):
     >>> argmin(lambda x: (x-5)**2, -20, 0)
     -0.00016935087808430278
     '''
+    if hi - lo < epsilon:
+        return lo
+    m1 = lo + (hi - lo)/3
+    m2 = lo + 2*(hi - lo)/3
+    vals = list(map(f, [lo, m1, m2, hi]))
+    if vals[0] == min(vals) or vals[1] == min(vals):
+        return argmin(f, lo, m2, epsilon)
+    elif vals[2] == min(vals) or vals[3] == min(vals):
+        return argmin(f, m1, hi, epsilon)
+    else:
+        return False
 
 
 ################################################################################
@@ -123,3 +226,6 @@ def argmin_simple(f, epsilon=1e-3):
     '''
     lo, hi = find_boundaries(f)
     return argmin(f, lo, hi, epsilon)
+
+x1 = argmin(lambda x: (x-5)**2, -20, 20)
+print(x1)
