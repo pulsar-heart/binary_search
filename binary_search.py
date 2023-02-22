@@ -68,7 +68,9 @@ def count_repeats(xs, x):
     >>> count_repeats([3, 2, 1], 4)
     0
     '''
-    if xs[1] == x:
+    if len(xs) == 0:
+        return 0
+    if xs[0] == x:
         lo = 0
     else:
         lo = highest_greater_index(xs, x)
@@ -120,7 +122,7 @@ def highest_greater_index(xs, x):
     '''
     if len(xs) == 0:
         return None
-    if xs[1] < x:
+    if xs[0] < x:
         return None
 
     def go(left, right):
