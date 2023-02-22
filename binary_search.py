@@ -6,16 +6,15 @@ It's really easy to have off-by-1 errors in these problems.
 Pay very close attention to your list indexes and your < vs <= operators.
 '''
 
+
 def find_smallest_positive(xs):
     '''
     Assume that xs is a list of numbers sorted from LOWEST to HIGHEST.
     Find the index of the smallest positive number.
     If no such index exists, return `None`.
-
     HINT: 
     This is essentially the binary search algorithm from class,
     but you're always searching for 0.
-
     APPLICATION:
     This is a classic question for technical interviews.
 
@@ -50,7 +49,6 @@ def count_repeats(xs, x):
     Assume that xs is a list of numbers sorted from HIGHEST to LOWEST,
     and that x is a number.
     Calculate the number of times that x occurs in xs.
-
     HINT: 
     Use the following three step procedure:
         1) use binary search to find the lowest index with a value >= x
@@ -73,7 +71,7 @@ def count_repeats(xs, x):
         lo = 0
     else: 
         lo = highest_greater_index(xs, x)
-        if lo == None:
+        if lo is None:
             return 0
         else:
             lo += 1
@@ -81,10 +79,9 @@ def count_repeats(xs, x):
         hi = len(xs)
     else:
         hi = lowest_less_index(xs, x)
-        if hi == None:
+        if hi is None:
             return 0
     return hi - lo
-
 
 
 def lowest_less_index(xs, x):
@@ -98,6 +95,7 @@ def lowest_less_index(xs, x):
         return None
     if xs[-1] > x:
         return None
+
     def go(left, right):
         if left == right:
             if xs[left] < x:
@@ -123,6 +121,7 @@ def highest_greater_index(xs, x):
         return None
     if xs[1] < x:
         return None
+
     def go(left, right):
         if left == right:
             if xs[left] > x:
@@ -142,7 +141,7 @@ def highest_greater_index(xs, x):
         if xs[mid] <= x:
             right = mid - 1
         return go(left, right)
-          
+  
     return go(0, len(xs) - 1)
 
 
@@ -181,8 +180,8 @@ def argmin(f, lo, hi, epsilon=1e-3):
     '''
     if hi - lo < epsilon:
         return lo
-    m1 = lo + (hi - lo)/3
-    m2 = lo + 2*(hi - lo)/3
+    m1 = lo + (hi - lo) / 3
+    m2 = lo + 2 * (hi - lo) / 3
     vals = list(map(f, [lo, m1, m2, hi]))
     if vals[0] == min(vals) or vals[1] == min(vals):
         return argmin(f, lo, m2, epsilon)
